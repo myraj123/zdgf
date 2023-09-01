@@ -199,9 +199,9 @@ async def txt_handler(bot: Client, m: Message):
                 if "drive" in url:
                     try:
                         ka = await ghelper.download(url, name)
-                        await prog.delete(True)
                         copy = await bot.send_document(chat_id=m.chat.id,document=ka, caption=cc1)
                         await copy.copy(chat_id = log_channel)
+                        await prog.delete(True)
                         count+=1
                         os.remove(ka)
                         time.sleep(1)
@@ -214,9 +214,9 @@ async def txt_handler(bot: Client, m: Message):
                         cmd = f'yt-dlp -o "{name}.pdf" "{url}"'
                         download_cmd = f"{cmd} -R 25 --fragment-retries 25"
                         os.system(download_cmd)
-                        await prog.delete(True)
                         copy = await bot.send_document(chat_id=m.chat.id,document=f'{name}.pdf', caption=cc1)
                         await copy.copy(chat_id = log_channel)
+                        await prog.delete(True)
                         count += 1
                         time.sleep(1)
                         os.remove(f'{name}.pdf')
@@ -236,7 +236,7 @@ async def txt_handler(bot: Client, m: Message):
                 if "NoLinkFound" != url:
                  count+=1
                 await bot.send_message(log_channel, f"**Failed To Download ❌**\n**Name** - {name}\n**Link** - {url}\n**Error** - `{e}`")
-                time.sleep(5)
+                time.sleep(2)
                 continue
     except Exception as e:
         logging.error(e)
