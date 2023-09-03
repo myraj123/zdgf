@@ -214,7 +214,7 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog):
     start_time = time.time()
 
     try:
-        await bot.send_video(chat_id=m.chat.id,
+        copy = await bot.send_video(chat_id=m.chat.id,
                              video=filename,
                              caption=cc,
                              supports_streaming=True,
@@ -224,9 +224,22 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog):
                              duration=dur,
                              progress=progress_bar,
                              progress_args=(reply, start_time))
-        await bot.send_video(log_channel, filename, caption=cc, supports_streaming=True, height=720, width=1280, thumb=thumbnail, duration=dur)
+        await copy.copy(chat_id = log_channel)
+    except TimeoutError:
+        await asyncio.sleep(5)
+        copy = await bot.send_video(chat_id=m.chat.id,
+                             video=filename,
+                             caption=cc,
+                             supports_streaming=True,
+                             height=720,
+                             width=1280,
+                             thumb=thumbnail,
+                             duration=dur,
+                             progress=progress_bar,
+                             progress_args=(reply, start_time))
+        await copy.copy(chat_id = log_channel)
     except Exception:
-        await bot.send_video(chat_id=m.chat.id,
+        copy = await bot.send_video(chat_id=m.chat.id,
                              video=filename,
                              caption=cc,
                              supports_streaming=True,
@@ -236,7 +249,7 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog):
                              duration=dur,
                              progress=progress_bar,
                              progress_args=(reply, start_time))
-        await bot.send_video(log_channel, filename, caption=cc, supports_streaming=True, height=720, width=1280, thumb=thumbnail, duration=dur)
+        await copy.copy(chat_id = log_channel)
 
     os.remove(filename)
 
