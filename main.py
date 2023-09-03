@@ -50,15 +50,18 @@ async def start_handler(bot: Client, m: Message):
         editable = await m.reply_text(
             "Hello 👋 **I am a simple bot**.\n\n**Developer** ....\n**Language** : Python\n**Framework** : Pyrogram\n\n/fast - **To Input TXT file.**")
             
-@bot.on_message(filters.command(["restart"]))
-async def restart_handler(bot: Client, m: Message):
- rcredit = "Bot Restarted by " + f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
- if (f'{m.from_user.id}' in batch or batch == []) or m.from_user.id == sudo_user:
-    await m.reply_text("Restarted ✅", True)
-    await bot.send_message(log_channel, rcredit)
+@bot.on_message(filters.command("stop")&(filters.chat(auth_users)))
+async def restart_handler(_, m):
+    await m.reply_text("**STOPPED**🛑", True)
     os.execl(sys.executable, sys.executable, *sys.argv)
- else:
- 	await m.reply_text("You are not started this batch 😶.")
+
+@bot.on_message(filters.command(["cancel"])&(filters.chat(auth_users)))
+async def cancel(_, m):
+    editable = await m.reply_text("Canceling All process Plz wait\n🚦🚦 Last Process Stopped 🚦🚦")
+    global cancel
+    cancel = True
+    await editable.edit("cancled")
+    return
 
 @bot.on_message(filters.command(["fast"])&(filters.chat(auth_users)))
 async def txt_handler(bot: Client, m: Message):
@@ -88,15 +91,15 @@ async def txt_handler(bot: Client, m: Message):
     raw_text = input1.text
     await input1.delete(True)
     
-    await editable.edit("**Enter Batch Name or send `df` for grebbing it from txt.**")
+    await editable.edit("**Enter Batch Name or send   /default  for grabbing it from txt.**")
     input0: Message = await bot.listen(editable.chat.id, filters.user(m.from_user.id))
     raw_text0 = input0.text 
-    if raw_text0 == 'df':
+    if raw_text0 == '/default':
         b_name = file_name
     else:
         b_name = raw_text0
     await input0.delete(True)  
-    await editable.edit("**Enter resolution:**")
+    await editable.edit("**Enter Resolution:**")
     input2: Message = await bot.listen(editable.chat.id, filters.user(m.from_user.id))
     raw_text22 = input2.text
     await input2.delete(True)
@@ -117,10 +120,10 @@ async def txt_handler(bot: Client, m: Message):
             res = "UN"
     except Exception:
             res = "UN"
-    await editable.edit("**Enter Caption or send `df` for default or just /skip**")    
+    await editable.edit("**Enter Caption or send  /df  for default or just /skip**")    
     input7: Message = await bot.listen(editable.chat.id, filters.user(m.from_user.id))
     raw_text7 = input7.text 
-    if raw_text7 == 'df':
+    if raw_text7 == '/df':
         creditx = credit
     elif raw_text7 == '/skip':
         creditx = ''
@@ -227,6 +230,7 @@ async def txt_handler(bot: Client, m: Message):
                 else:
                     res_file = await ghelper.download_video(url,cmd, name)
                     filename = res_file
+                    await prog.delete(True)
                     await ghelper.send_vid(bot, m,cc,filename,thumb,name,prog)
                     count+=1
                     time.sleep(1)
@@ -235,7 +239,6 @@ async def txt_handler(bot: Client, m: Message):
                 await m.reply_text(f"**Failed To Download ❌**\n**Name** - {name}\n**Link** - `{urlm}`")
                 if "NoLinkFound" != url:
                  count+=1
-                await bot.send_message(log_channel, f"**Failed To Download ❌**\n**Name** - {name}\n**Link** - {url}\n**Error** - `{e}`")
                 time.sleep(2)
                 continue
     except Exception as e:
