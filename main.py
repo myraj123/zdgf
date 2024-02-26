@@ -169,7 +169,7 @@ async def txt_handler(bot: Client, m: Message):
                         url = re.search(r"(https://.*?playlist.m3u8.*?)\"", text).group(1)
             elif "/master.mpd" in url:
             	vida = url.split("/")[-2]
-            	url = f"https://d26g5bnklkwsh4.cloudfront.net/{vida}/master.m3u8"
+            	url = f"https://psitoffers.store/testkey.php?vid={vida}&quality=480"
             elif "nocookie.com" in url:
                 url = url.replace('-nocookie', '')
             elif "d9an9suwcevit" in url:
