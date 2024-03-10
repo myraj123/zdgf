@@ -208,9 +208,9 @@ async def txt_handler(bot: Client, m: Message):
                         await copy.copy(chat_id = log_channel)
                         await prog.delete(True)
                         count+=1
-                        time.sleep(1)
+                        time.sleep(0.5)
                         os.remove(ka)
-                        time.sleep(3)
+                        time.sleep(0.5)
                     except FloodWait as e:
                         await m.reply_text(str(e))
                         time.sleep(e.x)
@@ -227,7 +227,7 @@ async def txt_handler(bot: Client, m: Message):
                         count += 1
                         time.sleep(1)
                         os.remove(f'{name}.pdf')
-                        time.sleep(3)
+                        time.sleep(0.5)
                     except FloodWait as e:
                         await m.reply_text(str(e))
                         time.sleep(e.x)
@@ -238,13 +238,13 @@ async def txt_handler(bot: Client, m: Message):
                     await prog.delete(True)
                     await ghelper.send_vid(bot, m,cc,filename,thumb,name,prog)
                     count+=1
-                    time.sleep(1)
+                    time.sleep(0.5)
             except Exception as e:
                 logging.error(e)
                 await m.reply_text(f"**Failed To Download ❌**\n**Name** - {name}\n**Link** - `{urlm}`")
                 if "NoLinkFound" != url:
                  count+=1
-                time.sleep(2)
+                time.sleep(0.5)
                 continue
     except Exception as e:
         logging.error(e)
